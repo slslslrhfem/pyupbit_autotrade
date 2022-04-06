@@ -116,13 +116,11 @@ def parameter_normalize(parameter,normalizer_num,to_num): # to_num 가까이로 
     return_num = (parameter + normalizer_num*to_num)/(to_num+1)
     return return_num
 
-def auto_trader(ticker_list,buy_golden_cross=1.05, sell_parameter=1, sell_golden_cross=1.02):
+def auto_trader(ticker_list,buy_golden_cross=1.05, sell_parameter=1, sell_golden_cross=1.02, access_key, secret_key):
     buyed_list = []
     selled_list = []
     buy_num=0
     #krw_tickers or btc_tickers를 input으로
-    access_key = 'IxNTTErWuBHOhOI2uJ2hSckcYYapNxW1H6Mpnh8p'
-    secret_key = 'TwwQFKjABw8AXa6w6iyRC3jOWgUqFbAxfXw2wzCP'
     access = access_key
     secret = secret_key
     first_parameter_set = [buy_golden_cross, sell_parameter, sell_golden_cross]
