@@ -51,11 +51,9 @@ def get_ma20(ticker):
 
 
 # 투자내역 조회
-def get_balance(ticker):
+def get_balance(ticker,access_key, secret_key):
     while True:
         try:
-            access_key = 'IxNTTErWuBHOhOI2uJ2hSckcYYapNxW1H6Mpnh8p'
-            secret_key = 'TwwQFKjABw8AXa6w6iyRC3jOWgUqFbAxfXw2wzCP'
             access = access_key
             secret = secret_key
 
@@ -148,8 +146,8 @@ def auto_trader(ticker_list,buy_golden_cross=1.05, sell_parameter=1, sell_golden
                 ma5_pre=get_ma5_pre(ticker_to_trade)
                 ma60 = get_ma20(ticker_to_trade)
                 current_price = get_current_price(ticker_to_trade)
-                ticker1_balance = get_balance(ticker1)
-                ticker2_balance = get_balance(ticker2)
+                ticker1_balance = get_balance(ticker1,access_key, secret_key)
+                ticker2_balance = get_balance(ticker2,access_key, secret_key)
 
                 sell_parameter = parameter_normalize(sell_parameter, 1.15, 0.01)
                 sell_golden_cross = parameter_normalize(sell_golden_cross, 1.1, 0.01)
@@ -157,7 +155,7 @@ def auto_trader(ticker_list,buy_golden_cross=1.05, sell_parameter=1, sell_golden
                 print("------------------------------------------------------------------------------")
                 print("현재 시간 : ", now)
                 print(ticker1_balance, ticker2_balance)
-                print(get_balance('BTC'), ticker1)
+                print(get_balance('BTC',access_key, secret_key), ticker1)
                 if ma15 / ma60 >= buy_golden_cross: #사야하는 상황일때
                     if ticker1 == 'KRW':
                         minimum_balance = 6000
@@ -196,7 +194,7 @@ def auto_trader(ticker_list,buy_golden_cross=1.05, sell_parameter=1, sell_golden
                         f.close()
                         time.sleep(10)
                         break
-                    to_sell = get_balance(ticker2)
+                    to_sell = get_balance(ticker2,access_key, secret_key)
                     print(buyed_list[-1])
                     if float(ma15 / ma60) < float(sell_golden_cross):  # 변수명 ㅈㅅ하지만 ma5나 ma15나 둘다 5개임. sell_parameter가 클수록 쉽게 팜
                         print("15일 이동평균선이 하락하려하여 매도합니다.")
