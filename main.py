@@ -30,9 +30,9 @@ if __name__ == '__main__':
         elif ticker[0]=='B':
             btc_tickers.append(ticker)
 
-    ticker_arg=[(btc_tickers,1.05,123,123)]#, (btc_tickers,1.05,123,123)] # 123은 의미 없다. 매수만 하도록 구현이 되어있기 때문
+    ticker_arg=[(btc_tickers,1.05,123,123,access_key, secret_key)]#, (btc_tickers,1.05,123,123)] # 123은 의미 없다. 매수만 하도록 구현이 되어있기 때문
     
-    auto_trader(btc_tickers,1.05,1.02,1.01) # Default, Test
+    auto_trader(btc_tickers,1.05,1.02,1.01,access_key, secret_key) # Default, Test
     """
     for arg in ticker_arg:
         proc = multiprocessing.Process(target=pyupbit_util_realtrade.auto_trader,args=arg)
@@ -46,7 +46,7 @@ if __name__ == '__main__':
     for goldbuyes in buy_gold_list:
         for goldselles in sell_gold_list:
             for sell_params in sell_parameter_list:
-                proc= multiprocessing.Process(target=auto_trader,args=(btc_tickers, goldbuyes,goldselles, sell_params)) #Parameter 시험용
+                proc= multiprocessing.Process(target=auto_trader,args=(btc_tickers, goldbuyes,goldselles, sell_params,access_key, secret_key)) #Parameter 시험용
                 multiprocessing_arguments.append(proc)
                 proc.start()
     for proc in multiprocessing_arguments:
@@ -54,4 +54,4 @@ if __name__ == '__main__':
     """
 
 
-    #pyupbit_util_realtrade.auto_trader(btc_tickers,1.05,1.02,1.01) # 진짜 돈으로 와리가리 함
+    #pyupbit_util_realtrade.auto_trader(btc_tickers,1.05,1.02,1.01,access_key, secret_key) # 진짜 돈으로 와리가리 함
