@@ -52,11 +52,9 @@ def get_ma20(ticker):
 
 
 # 투자내역 조회
-def get_balance(ticker):
+def get_balance(ticker,access_key, secret_key):
     while True:
         try:
-            access_key = 'IxNTTErWuBHOhOI2uJ2hSckcYYapNxW1H6Mpnh8p'
-            secret_key = 'TwwQFKjABw8AXa6w6iyRC3jOWgUqFbAxfXw2wzCP'
             access = access_key
             secret = secret_key
 
@@ -127,14 +125,13 @@ def parameter_normalize(parameter,normalizer_num,to_num): # to_num 가까이로 
     return_num = (parameter + normalizer_num*to_num)/(normalizer_num+1)
     return return_num
 
-def auto_trader(ticker_list, buy_golden_cross=1.05, sell_parameter=1, sell_golden_cross=1.02):
+def auto_trader(ticker_list, buy_golden_cross, sell_parameter, sell_golden_cross,access_key, secret_key):
     buyed_list = []
     selled_list = []
     recent_buyed_list=[]
     buy_num = 0
     # krw_tickers or btc_tickers를 input으로
-    access_key = 'IxNTTErWuBHOhOI2uJ2hSckcYYapNxW1H6Mpnh8p'
-    secret_key = 'TwwQFKjABw8AXa6w6iyRC3jOWgUqFbAxfXw2wzCP'
+
     access = access_key
     secret = secret_key
 
@@ -163,8 +160,8 @@ def auto_trader(ticker_list, buy_golden_cross=1.05, sell_parameter=1, sell_golde
                 ma5_pre = get_ma5_pre(ticker_to_trade)
                 ma60 = get_ma20(ticker_to_trade)
                 current_price = get_current_price(ticker_to_trade)
-                ticker1_balance = get_balance(ticker1)
-                ticker2_balance = get_balance(ticker2)
+                ticker1_balance = get_balance(ticker1,access_key, secret_key)
+                ticker2_balance = get_balance(ticker2,access_key, secret_key)
                 print("------------------------------------------------------------------------------")
                 print("현재 시간 : ", now)
                 if len(buyed_list)>1:
@@ -199,7 +196,7 @@ def auto_trader(ticker_list, buy_golden_cross=1.05, sell_parameter=1, sell_golde
                         buyed = 1
 
                         time.sleep(5)
-                        num = upbit.get_balance(ticker2)
+                        num = upbit.get_balance(ticker2,access_key, secret_key)
                         orderbook = pyupbit.get_orderbook(ticker_to_trade)
                         all_prices = []
                         for books in orderbook[0]['orderbook_units']:
@@ -222,7 +219,7 @@ def auto_trader(ticker_list, buy_golden_cross=1.05, sell_parameter=1, sell_golde
                             #print("이미 구매한 상태입니다.현재 씨드는",str(ticker1_balance)," 현재 가격은", str(current_price),"BTC golden cross rate은 ", str(ma15 / ma60), '입니다.')
                             #print("현재 수익률은", str(current_price / float(buyed_list[buy_num - 1][1])), "입니다.") # 초회의 경우 list index out of range 이슈가 있음
                             time.sleep(10)
-                            num = upbit.get_balance(ticker2)
+                            num = upbit.get_balance(ticker2,access_key, secret_key)
                             orderbook = pyupbit.get_orderbook(ticker_to_trade)
                             all_prices = []
                             for books in orderbook[0]['orderbook_units']:
@@ -239,7 +236,7 @@ def auto_trader(ticker_list, buy_golden_cross=1.05, sell_parameter=1, sell_golde
                             print("이미 구매한 상태로, 매도 가격은 ",selled_price,"에 걸려있습니다.")
                         time.sleep(1)
 
-                    to_sell = get_balance(ticker2)
+                    to_sell = get_balance(ticker2,access_key, secret_key)
                     time.sleep(5)
                     if to_sell < minimum_balance:
                         selled_list.append((str(ticker2), str(current_price)))
@@ -248,7 +245,7 @@ def auto_trader(ticker_list, buy_golden_cross=1.05, sell_parameter=1, sell_golde
 
                 else:
                     if buyed == 0:
-                        num = upbit.get_balance(ticker2)
+                        num = upbit.get_balance(ticker2,access_key, secret_key)
                         orderbook = pyupbit.get_orderbook(ticker_to_trade)
                         all_prices = []
                         for books in orderbook[0]['orderbook_units']:
@@ -280,7 +277,7 @@ def auto_trader(ticker_list, buy_golden_cross=1.05, sell_parameter=1, sell_golde
                         f.close()
                         time.sleep(1)
                         break
-                    to_sell = get_balance(ticker2)
+                    to_sell = get_balance(ticker2,access_key, secret_key)
                     if to_sell < 0.001:
                         print("아마 본인에의해 판매되었습니다.")
 
